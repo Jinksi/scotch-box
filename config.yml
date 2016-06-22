@@ -1,0 +1,80 @@
+# Configuration for WP Distillery executed by setup.sh
+#
+# Forked from: https://github.com/flurinduerst/WPDistillery
+#
+# WP Distillery Version 1.51
+# File Version 1.41
+
+# SETUP SETTINGS
+#################################################################
+
+# WordPress folder to execute the setup
+wpfolder: public
+wplocale: en_US
+
+# admin user settings
+admin:
+  user: admin
+  password: password
+  email: info@thriveweb.com.au
+
+# scotch box db access
+db:
+  name: scotchbox
+  user: root
+  pass: root
+  prefix: wp_
+
+# WORDPRESS SETTINGS
+#################################################################
+
+wpsettings:
+  url: 192.168.33.10
+  title: Thrive Box
+  rewrite_structure: /%postname%/
+
+# THEME
+#################################################################
+
+# theme to install choose new name in 'rename' or leave empty
+theme:
+  name: flex-with-benefits
+  rename: "flex-with-benefits"
+  url: https://github.com/Jinksi/flex-with-benefits/archive/master.zip
+
+# PLUGINS
+#################################################################
+
+# plugins to install & activate
+plugins_active:
+  - https://github.com/wp-premium/advanced-custom-fields-pro/archive/master.zip
+  - https://github.com/wp-premium/gravityforms/archive/master.zip
+
+# plugins to install
+plugins_inactive:
+  - https://github.com/wp-sync-db/wp-sync-db/archive/master.zip
+  - https://github.com/wp-sync-db/wp-sync-db-media-files/archive/master.zip
+  - updraftplus
+  - password-protected
+  - svg-support
+  - wp-instagram-widget
+  - woocommerce
+  - wordpress-seo
+  - better-wp-security
+  - disable-wordpress-updates
+  - akismet
+  - intuitive-custom-post-order
+
+# SETUP OPTIONS
+####################################################################
+# if you don't want the setup to run all tasks set them to false
+
+installation:
+  wp: true
+  theme: true
+  plugins: true
+  cleanup: true
+    comment: true
+    posts: true
+    files: true
+    themes: true
