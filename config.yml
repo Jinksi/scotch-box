@@ -9,7 +9,7 @@
 #################################################################
 
 # WordPress folder to execute the setup
-wpfolder: public
+wpfolder: public_html
 wplocale: en_US
 
 # admin user settings
