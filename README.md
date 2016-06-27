@@ -21,15 +21,31 @@
 
 1. SSH into the Virtual Host with `vagrant ssh` from the site directory
 
-1. Change to the `public` directory – `cd /var/www/public`
+1. Change to the `public` directory
+  > `cd /var/www/public`
 
-1. Create a new database – `wp db create`
+1. Create a new database
+  > `wp db create`
 
-1. Import your existing database – `wp db import mysite_db.sql`
+1. Import your existing database
+  > `wp db import mysite_db.sql`
 
-1. Search and replace – `wp search-replace live-site.thrv.xyz my-site.dev`
+1. Search and replace
+  > `wp search-replace live-site.thrv.xyz my-site.dev`
 
 
 ### Creating a new Wordpress site
 
-> Coming soon
+1. Update site settings in `config.yml`
+
+  > Choose sitename, plugins, theme, username, password etc.
+
+1. SSH into the Virtual Host with `vagrant ssh` from the site directory
+
+1. Change to the `www` directory
+  > `cd /var/www`
+
+1. Run the setup script
+  > `bash setup.sh`
+
+1. <img src="./supa-hot.gif" alt="Thrive Box" />
