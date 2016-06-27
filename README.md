@@ -1,6 +1,6 @@
- ![Thrive Box](./thrive.gif)
 
-# Thrive Box
+
+# <img src="./thrive.gif" alt="Thrive Box" width="100px"/> Thrive Box
 
 ### Installation
 
