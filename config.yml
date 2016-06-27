@@ -29,7 +29,7 @@ db:
 #################################################################
 
 wpsettings:
-  url: 192.168.33.10
+  url: thrive-box.dev
   title: Thrive Box
   rewrite_structure: /%postname%/
 
