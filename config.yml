@@ -62,7 +62,6 @@ plugins_inactive:
   - wordpress-seo
   - better-wp-security
   - disable-wordpress-updates
-  - akismet
   - intuitive-custom-post-order
 
 # SETUP OPTIONS

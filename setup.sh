@@ -100,7 +100,6 @@ fi
 if $CONF_installation_plugins ; then
   printf "${BRN}[=== PLUGINS ===]${NC}\n"
   printf "${BLU}»»» removing WP default plugins${NC}\n"
-  wp plugin delete akismet
   wp plugin delete hello
   printf "${BLU}»»» adding active plugins${NC}\n"
   for entry in "${CONF_plugins_active[@]}"
