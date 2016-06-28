@@ -42,7 +42,7 @@ NC='\033[0m' # no color
 # EXECUTIVE SETUP
 ####################################################################################################
 
-printf "${BRN}========== WP DISTILLERY START ==========${NC}\n\n"
+printf "${BRN}========== WP SETUP START ==========${NC}\n\n"
 
 # READ CONFIG
 eval $(parse_yaml config.yml "CONF_")
@@ -67,6 +67,8 @@ if $CONF_installation_wp ; then
   wp core download --locale=$CONF_wplocale
   printf "${BLU}»»» creating wp-config...${NC}\n"
   wp core config --dbname=$CONF_db_name --dbuser=$CONF_db_user --dbpass=$CONF_db_pass --dbprefix=$CONF_db_prefix --locale=$CONF_wplocale
+  printf "${BLU}»»» creating database...${NC}\n"
+  wp db create || printf "database already exists\n"
   printf "${BLU}»»» installing wordpress...${NC}\n"
   wp core install --url=$CONF_wpsettings_url --title="$CONF_wpsettings_title" --admin_user=$CONF_admin_user --admin_password=$CONF_admin_password --admin_email=$CONF_admin_email
   printf "${BLU}»»» configure settings...${NC}\n"
@@ -141,4 +143,4 @@ else
   printf "${BLU}»»» skipping Cleanup...${NC}\n"
 fi
 
-printf "${BRN}========== WP DISTILLERY FINISHED ==========${NC}\n"
+printf "${BRN}========== WP SETUP FINISHED ==========${NC}\n"

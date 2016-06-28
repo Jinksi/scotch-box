@@ -18,9 +18,9 @@ admin:
   password: password
   email: info@thriveweb.com.au
 
-# scotch box db access
+# database
 db:
-  name: scotchbox
+  name: thrivebox
   user: root
   pass: root
   prefix: wp_
@@ -39,7 +39,7 @@ wpsettings:
 # theme to install choose new name in 'rename' or leave empty
 theme:
   name: flex-with-benefits
-  rename: "flex-with-benefits"
+  rename: "thrive-box"
   url: https://github.com/Jinksi/flex-with-benefits/archive/master.zip
 
 # PLUGINS
