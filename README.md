@@ -1,6 +1,6 @@
 
 
-# <img src="./thrive.gif" alt="Thrive Box" width="100px"/> Thrive Box
+# <img src="http://thriveweb.com.au/email7/thrive.gif" alt="Thrive Box" width="100px"/> Thrive Box
 
 ### Installation
 
@@ -48,4 +48,4 @@
 1. Run the setup script
   > `bash setup.sh`
 
-1. <img src="./supa-hot.gif" alt="Thrive Box" />
+1. Done
