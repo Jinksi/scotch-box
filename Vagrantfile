@@ -20,4 +20,14 @@ Vagrant.configure("2") do |config|
     # Optional NFS. Make sure to remove other synced_folder line too
     #config.vm.synced_folder ".", "/var/www", :nfs => { :mount_options => ["dmode=777","fmode=666"] }
 
+    if Vagrant.has_plugin? 'vagrant-triggers'
+      config.trigger.before :halt, :stdout => true do
+        info "Exporting DB"
+        run "vagrant ssh -c 'cd /var/www/public && wp db export'"
+      end
+    else
+      puts 'vagrant-triggers missing, please install the plugin:'
+      puts 'vagrant plugin install vagrant-triggers'
+    end
+
 end
