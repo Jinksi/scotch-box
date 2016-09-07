@@ -63,7 +63,7 @@ plugins_inactive:
   - better-wp-security
   - disable-wordpress-updates
   - intuitive-custom-post-order
-  - broken-link-checker
+  - simply-show-hooks
 
 # SETUP OPTIONS
 ####################################################################
