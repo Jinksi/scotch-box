@@ -2,6 +2,13 @@
 
 # <img src="http://thriveweb.com.au/email7/thrive.gif" alt="Thrive Box" width="100px"/> Thrive Box
 
+### Dependencies
+
+- [Vagrant](https://www.vagrantup.com/)
+- [VirtualBox](https://www.virtualbox.org/)
+- Vagrant plugins
+> `vagrant plugin install vagrant-hostmanager vagrant-triggers`
+
 ### Installation
 
 1. Clone this repo into your desired site directory. `git clone https://github.com/Jinksi/thrive-box.git my-site`
