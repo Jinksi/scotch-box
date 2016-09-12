@@ -60,10 +60,12 @@ plugins_inactive:
   - wp-instagram-widget
   - woocommerce
   - wordpress-seo
+  - yoast-seo-acf-analysis
   - better-wp-security
   - disable-wordpress-updates
   - intuitive-custom-post-order
   - simply-show-hooks
+  - cms-tree-page-view
 
 # SETUP OPTIONS
 ####################################################################
