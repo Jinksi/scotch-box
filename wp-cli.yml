@@ -1,7 +1,7 @@
 path: public
 core config:
 	extra-php: |
-	define( 'WP_DEBUG', true );
-	define('SP_REQUEST_URL', ($_SERVER['HTTPS'] ? 'https://' : 'http://') . $_SERVER['HTTP_HOST']);
-	define('WP_SITEURL', SP_REQUEST_URL);
-	define('WP_HOME', SP_REQUEST_URL);
+		define( 'WP_DEBUG', true );
+		define('SP_REQUEST_URL', ($_SERVER['HTTPS'] ? 'https://' : 'http://') . $_SERVER['HTTP_HOST']);
+		define('WP_SITEURL', SP_REQUEST_URL);
+		define('WP_HOME', SP_REQUEST_URL);
