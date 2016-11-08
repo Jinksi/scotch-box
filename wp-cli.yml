@@ -1,7 +1,11 @@
 path: public
 core config:
 	extra-php: |
+		if ( defined( 'WP_CLI' ) && WP_CLI && ! isset( $_SERVER['HTTP_HOST'] ) ) {
+  			$_SERVER['HTTP_HOST'] = 'wp-cli.org';
+		}
+
 		define( 'WP_DEBUG', true );
-		define('SP_REQUEST_URL', ($_SERVER['HTTPS'] ? 'https://' : 'http://') . $_SERVER['HTTP_HOST']);
+		define('SP_REQUEST_URL', (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST']);
 		define('WP_SITEURL', SP_REQUEST_URL);
 		define('WP_HOME', SP_REQUEST_URL);
