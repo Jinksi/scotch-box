@@ -1,46 +1,72 @@
-# Configuration for WP Distillery executed by setup.sh
+# Configuration for WPDistillery executed by setup.sh
 #
-# Forked from: https://github.com/flurinduerst/WPDistillery
+# Author: Flurin Dürst » https://flurinduerst.ch
+# URL: https://github.com/flurinduerst/WPDistillery
 #
-# WP Distillery Version 1.51
-# File Version 1.41
+# For detailed instructions on this file read the config.yml-documentation at
+# https://github.com/flurinduerst/WPDistillery/blob/master/README_CONFIG.md
+#
+# File Version: 1.6.2
 
-# SETUP SETTINGS
+
+# INSTALLATION
 #################################################################
 
-# WordPress folder to execute the setup
+# WordPress folder
 wpfolder: public
+
+# WordPress version
+wpversion: latest
+
+# language/timezone
 wplocale: en_US
+timezone: "Australia/Brisbane"
 
 # admin user settings
 admin:
   user: admin
   password: password
   email: info@thriveweb.com.au
+  first_name: ""
+  last_name: ""
 
-# database
+# scotch box db access
 db:
   name: thrivebox
   user: root
   pass: root
   prefix: wp_
 
-# WORDPRESS SETTINGS
+# SETTINGS
 #################################################################
 
 wpsettings:
   url: thrive-box.dev
   title: Thrive Box
-  rewrite_structure: /%postname%/
+  description: Example Description
+  permalink_structure: "/%postname%/"
+  thumbnail_width: 150
+  thumbnail_height: 150
+  medium_width: 300
+  medium_height: 300
+  large_width: 1024
+  large_height: 1024
+  # use page as frontpage
+  page_on_front: true
+    frontpage_name: Home Page
+  # automatic conversion of smilies
+  convert_smilies: false
 
 # THEME
 #################################################################
 
-# theme to install choose new name in 'rename' or leave empty
+# theme to install, choose new name in 'rename' or leave empty
 theme:
   name: flex-with-benefits
   rename: "thrive-box"
-  url: https://github.com/Jinksi/flex-with-benefits/archive/master.zip
+  url: "https://github.com/Jinksi/flex-with-benefits/archive/master.zip"
+  # add branch (e.g. master) or leave empty ("") if theme is not downloaded from a git repository
+  source_branch: ""
 
 # PLUGINS
 #################################################################
@@ -67,12 +93,13 @@ plugins_inactive:
   - simply-show-hooks
   - cms-tree-page-view
 
-# SETUP OPTIONS
+# WPDISTILLERY SETUP
 ####################################################################
-# if you don't want the setup to run all tasks set them to false
+# if you don't want the setup to run all tasks, set them to false
 
-installation:
+setup:
   wp: true
+  settings: true
   theme: true
   plugins: true
   cleanup: true

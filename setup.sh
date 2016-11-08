@@ -1,11 +1,24 @@
 #!/usr/bin/env bash
 #
-# Forked from: https://github.com/flurinduerst/WPDistillery
+# WP SETUP FILE
 #
-# ScWPSetup Version 1.51
-# File Version 1.43
+# Author: Flurin Dürst » github.com/flurinduerst
+# URL: https://github.com/flurinduerst/WPDistillery
+#
+# File version 1.6.1
 
-set -e
+# ERROR Handler
+# ask user to continue on error
+function continue_error {
+  read -p "$(echo -e "${RED}Do you want to continue anyway? (y/n) ${NC}")" -n 1 -r
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    printf "\n${RED}»»» aborting WPDistillery setup! ${NC}\n"
+    exit 1
+  else
+    printf "\n${GRN}»»» continuing WPDistillery setup... ${NC}\n"
+  fi
+}
+trap 'continue_error' ERR
 
 # REQUIREMENTS
 ####################################################################################################
@@ -42,7 +55,7 @@ NC='\033[0m' # no color
 # EXECUTIVE SETUP
 ####################################################################################################
 
-printf "${BRN}========== WP SETUP START ==========${NC}\n\n"
+printf "${BRN}========== WPDISTILLERY START ==========${NC}\n\n"
 
 # READ CONFIG
 eval $(parse_yaml config.yml "CONF_")
@@ -50,7 +63,7 @@ eval $(parse_yaml config.yml "CONF_")
 # CHECK WP FOLDER
 if [ ! -d "$CONF_wpfolder" ]; then
   mkdir $CONF_wpfolder
-  printf "${BLU}»»» creating WP Folder CONF_wpfolder...${NC}\n"
+  printf "${BLU}»»» creating WP Folder $CONF_wpfolder...${NC}\n"
 fi
 
 cd $CONF_wpfolder
@@ -61,43 +74,109 @@ printf "${BLU}»»» checking wp cli version${NC}\n"
 sudo wp cli update --allow-root
 
 # INSTALL WORDPRESS
-if $CONF_installation_wp ; then
+if $CONF_setup_wp ; then
   printf "${BRN}[=== INSTALL WORDPRESS ===]${NC}\n"
   printf "${BLU}»»» downloading WordPress...${NC}\n"
-  wp core download --locale=$CONF_wplocale
+  wp core download --locale=$CONF_wplocale --version=$CONF_wpversion
   printf "${BLU}»»» creating wp-config...${NC}\n"
   wp core config --dbname=$CONF_db_name --dbuser=$CONF_db_user --dbpass=$CONF_db_pass --dbprefix=$CONF_db_prefix --locale=$CONF_wplocale
-  printf "${BLU}»»» creating database...${NC}\n"
-  wp db create || printf "${RED}database already exists\n"
   printf "${BLU}»»» installing wordpress...${NC}\n"
   wp core install --url=$CONF_wpsettings_url --title="$CONF_wpsettings_title" --admin_user=$CONF_admin_user --admin_password=$CONF_admin_password --admin_email=$CONF_admin_email
-  printf "${BLU}»»» configure settings...${NC}\n"
-  wp rewrite structure $CONF_wpsettings_rewrite_structure
+  wp user update 1 --first_name=$CONF_admin_first_name --last_name=$CONF_admin_last_name
 else
-  printf "${BLU}-> skipping WordPress installation...${NC}\n"
+  printf "${BLU}>>> skipping WordPress installation...${NC}\n"
+fi
+
+if $CONF_setup_settings ; then
+  printf "${BLU}»»» configure settings...${NC}\n"
+  printf "» timezone:\n"
+  wp option update timezone $CONF_timezone
+  wp option update timezone_string $CONF_timezone
+  printf "» permalink structure:\n"
+  wp rewrite structure "$CONF_wpsettings_permalink_structure"
+  wp rewrite flush
+  printf "» description:\n"
+  wp option update blogdescription "$CONF_wpsettings_description"
+  printf "» image sizes:\n"
+  wp option update thumbnail_size_w $CONF_wpsettings_thumbnail_width
+  wp option update thumbnail_size_h $CONF_wpsettings_thumbnail_height
+  wp option update medium_size_w $CONF_wpsettings_medium_width
+  wp option update medium_size_h $CONF_wpsettings_medium_height
+  wp option update large_size_w $CONF_wpsettings_large_width
+  wp option update large_size_h $CONF_wpsettings_large_height
+  if ! $CONF_wpsettings_convert_smilies ; then
+    wp option update convert_smilies 0
+  fi
+  if $CONF_wpsettings_page_on_front ; then
+    printf "» front page:\n"
+    # create and set frontpage
+    wp post create --post_type=page --post_title="$CONF_wpsettings_page_on_front_frontpage_name" --post_content='Front Page created by WPDistillery' --post_status=publish
+    wp option update page_on_front $(wp post list --post_type=page --post_status=publish --posts_per_page=1 --pagename="$CONF_wpsettings_page_on_front_frontpage_name" --field=ID --format=ids)
+    wp option update show_on_front 'page'
+  fi
+else
+  printf "${BLU}>>> skipping settings...${NC}\n"
 fi
 
 # INSTALL THEME
-if $CONF_installation_theme ; then
+if $CONF_setup_theme ; then
   printf "${BRN}[=== INSTALL $CONF_theme_name ===]${NC}\n"
   printf "${BLU}»»» downloading $CONF_theme_name...${NC}\n"
   wp theme install $CONF_theme_url
   printf "${BLU}»»» installing/activating $CONF_theme_name...${NC}\n"
-  if [ $CONF_theme_rename != "" ]; then
+  if [ ! -z "$CONF_theme_rename" ]; then
     # rename theme
     printf "${BLU}»»» renaming $CONF_theme_name to $CONF_theme_rename...${NC}\n"
-    mv wp-content/themes/$CONF_theme_name-master wp-content/themes/$CONF_theme_rename
+    # check if git source
+    if [ ! -z "$CONF_theme_source_branch" ]; then
+      mv wp-content/themes/$CONF_theme_name-$CONF_theme_source_branch wp-content/themes/$CONF_theme_rename
+    else
+      mv wp-content/themes/$CONF_theme_name wp-content/themes/$CONF_theme_rename
+    fi
     wp theme activate $CONF_theme_rename
   else
-    mv wp-content/themes/$CONF_theme_name-master wp-content/themes/$CONF_theme_name
+    # check if git source
+    if [ ! -z "$CONF_theme_source_branch" ]; then
+      mv wp-content/themes/$CONF_theme_name-$CONF_theme_source_branch wp-content/themes/$CONF_theme_name
+    else
     wp theme activate $CONF_theme_name
+    fi
   fi
 else
-  printf "${BLU}»»» skipping theme installation...${NC}\n"
+  printf "${BLU}>>> skipping theme installation...${NC}\n"
+fi
+
+# CLEANUP
+if $CONF_setup_cleanup ; then
+  printf "${BRN}[=== CLEANUP ===]${NC}\n"
+  if $CONF_setup_cleanup_comment ; then
+    printf "${BLU}»»» removing default comment...${NC}\n"
+    wp comment delete 1 --force
+  fi
+  if $CONF_setup_cleanup_posts ; then
+    printf "${BLU}»»» removing default posts...${NC}\n"
+    wp post delete 1 2 --force
+  fi
+  if $CONF_setup_cleanup_files ; then
+    printf "${BLU}»»» removing WP readme/license files...${NC}\n"
+    # delete default files
+    if [ -f readme.html ];    then rm readme.html;    fi
+    if [ -f license.txt ];    then rm license.txt;    fi
+    # delete german files
+    if [ -f liesmich.html ];  then rm liesmich.html;  fi
+  fi
+  if $CONF_setup_cleanup_themes ; then
+    printf "${BLU}»»» removing default themes...${NC}\n"
+    wp theme delete twentyfourteen
+    wp theme delete twentyfifteen
+    wp theme delete twentysixteen
+  fi
+else
+  printf "${BLU}>>> skipping Cleanup...${NC}\n"
 fi
 
 # PLUGINS
-if $CONF_installation_plugins ; then
+if $CONF_setup_plugins ; then
   printf "${BRN}[=== PLUGINS ===]${NC}\n"
   printf "${BLU}»»» removing WP default plugins${NC}\n"
   wp plugin delete hello
@@ -113,33 +192,11 @@ if $CONF_installation_plugins ; then
     wp plugin install $entry
   done
 else
-  printf "${BLU}»»» skipping Plugin installation...${NC}\n"
+  printf "${BLU}>>> skipping Plugin installation...${NC}\n"
 fi
 
-# CLEANUP
-if $CONF_installation_cleanup ; then
-  printf "${BRN}[=== CLEANUP ===]${NC}\n"
-  if $CONF_installation_cleanup_comment ; then
-    printf "${BLU}»»» removing default comment...${NC}\n"
-    wp comment delete 1 --force
-  fi
-  if $CONF_installation_cleanup_posts ; then
-    printf "${BLU}»»» removing default posts...${NC}\n"
-    wp post delete 1 2 --force
-  fi
-  if $CONF_installation_cleanup_files ; then
-    printf "${BLU}»»» removing WP readme/license files...${NC}\n"
-    rm readme.html
-    rm license.txt
-  fi
-  if $CONF_installation_cleanup_themes ; then
-    printf "${BLU}»»» removing default themes...${NC}\n"
-    wp theme delete twentyfourteen
-    wp theme delete twentyfifteen
-    wp theme delete twentysixteen
-  fi
-else
-  printf "${BLU}»»» skipping Cleanup...${NC}\n"
-fi
+# MISC
+printf "${BLU}»»» checking wp cli version${NC}\n"
+wp cli check-update
 
-printf "${BRN}========== WP SETUP FINISHED ==========${NC}\n"
+printf "${BRN}========== WPDISTILLERY FINISHED ==========${NC}\n"
