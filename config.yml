@@ -32,7 +32,7 @@ admin:
 
 # scotch box db access
 db:
-  name: thrivebox
+  name: scotchbox
   user: root
   pass: root
   prefix: wp_
