@@ -73,25 +73,9 @@ theme:
 
 # plugins to install & activate
 plugins_active:
-  - https://github.com/wp-premium/advanced-custom-fields-pro/archive/master.zip
-  - https://github.com/wp-premium/gravityforms/archive/master.zip
 
 # plugins to install
 plugins_inactive:
-  - https://github.com/wp-sync-db/wp-sync-db/archive/master.zip
-  - https://github.com/wp-sync-db/wp-sync-db-media-files/archive/master.zip
-  - updraftplus
-  - password-protected
-  - svg-support
-  - wp-instagram-widget
-  - woocommerce
-  - wordpress-seo
-  - yoast-seo-acf-analysis
-  - better-wp-security
-  - disable-wordpress-updates
-  - intuitive-custom-post-order
-  - simply-show-hooks
-  - cms-tree-page-view
 
 # WPDISTILLERY SETUP
 ####################################################################
