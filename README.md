@@ -9,7 +9,13 @@
 - Vagrant plugins
 > `vagrant plugin install vagrant-hostmanager vagrant-triggers`
 
-### Installation
+### Installation with npm (recommended)
+
+1. `npm install -g newbox`
+
+1. See [newbox](https://github.com/Jinksi/newbox)
+
+### Manual Installation
 
 1. Clone this repo into your desired site directory. `git clone https://github.com/Jinksi/thrive-box.git my-site`
 
